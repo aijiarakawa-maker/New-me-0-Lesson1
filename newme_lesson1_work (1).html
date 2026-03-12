@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>New me | 第0章 Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding-bottom: 80px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .header {
+    padding: 24px 20px 16px;
+    border-bottom: 2px solid #1a1a1a;
+  }
+
+  .header-chapter {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .header-title {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .section { margin-top: 36px; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .points-card {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+
+  .points-list { list-style: none; }
+
+  .points-list li {
+    font-size: 14px;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    color: #333;
+  }
+
+  .points-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #888;
+  }
+
+  .question-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 22px 18px;
+    margin-bottom: 14px;
+  }
+
+  .q-number {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 72px;
+    border-bottom: 2px solid #1a1a1a;
+    text-align: center;
+    margin: 0 3px;
+    padding: 0 4px;
+    font-weight: 500;
+  }
+
+  .fill-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 13px 14px;
+    font-size: 15px;
+    color: #1a1a1a;
+    font-family: 'Noto Sans JP', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .fill-input:focus { border-color: #1a1a1a; }
+  .fill-input.correct { border-color: #2a9d6a; background: #f0faf5; }
+  .fill-input.wrong { border-color: #c0392b; background: #fdf5f5; }
+  .fill-input:disabled { background: #f7f7f7; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+
+  .choice-btn {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 14px;
+    color: #1a1a1a;
+    font-family: 'Noto Sans JP', sans-serif;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .choice-btn:active { background: #f5f5f5; }
+
+  .choice-label {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .choice-btn.correct-answer { border-color: #2a9d6a; background: #f0faf5; }
+  .choice-btn.correct-answer .choice-label { background: #2a9d6a; border-color: #2a9d6a; color: #fff; }
+  .choice-btn.wrong-answer { opacity: 0.4; }
+  .choice-btn:disabled { cursor: default; }
+
+  .free-textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    color: #1a1a1a;
+    font-family: 'Noto Sans JP', sans-serif;
+    resize: none;
+    outline: none;
+    line-height: 1.8;
+    min-height: 110px;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+
+  .free-textarea:focus { border-color: #1a1a1a; }
+  .free-hint { font-size: 12px; color: #999; margin-top: 8px; }
+
+  .feedback {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #f0faf5; color: #2a7a52; }
+  .feedback.wrong-fb { background: #fdf5f5; color: #a93226; }
+  .feedback.info-fb { background: #f7f7f7; color: #555; }
+
+  .check-btn {
+    width: 100%;
+    margin-top: 14px;
+    background: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .check-btn:active { opacity: 0.7; }
+  .check-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .divider { height: 1px; background: #eee; margin: 32px 0; }
+
+  .okite-card {
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px 18px;
+    margin-bottom: 14px;
+  }
+
+  .okite-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .okite-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .okite-num {
+    width: 22px;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .okite-text { font-size: 14px; line-height: 1.7; }
+  .okite-sub { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .conclusion-card {
+    border: 1px solid #1a1a1a;
+    border-radius: 10px;
+    padding: 20px 18px;
+    margin-bottom: 14px;
+  }
+
+  .conclusion-text { font-size: 15px; line-height: 1.9; }
+
+  .complete-section { text-align: center; padding: 40px 20px 20px; }
+
+  .complete-btn {
+    background: #1a1a1a;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+  }
+
+  .complete-btn:active { opacity: 0.7; }
+  .complete-note { font-size: 12px; color: #999; margin-top: 12px; }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 24px;
+    text-align: center;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .modal-icon { font-size: 40px; margin-bottom: 14px; }
+  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .modal-score { font-size: 40px; font-weight: 700; margin-bottom: 4px; }
+  .modal-score-label { font-size: 12px; color: #888; margin-bottom: 20px; }
+  .modal-text { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 24px; }
+
+  .modal-close {
+    background: #1a1a1a;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 40px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-chapter">第0章 · New me 成功原則</div>
+  <div class="header-title">Lesson 1：なぜ変わりたいのに変われないのか</div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-label">この節で学ぶこと</div>
+    <div class="points-card">
+      <ul class="points-list">
+        <li>変われない理由は意志の問題ではない</li>
+        <li>自己イメージが行動を決める仕組み</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">穴埋め問題</div>
+
+    <div class="question-card" id="card1">
+      <div class="q-number">Q 01 · 穴埋め</div>
+      <div class="q-text">人は、「<span class="blank" id="blank1">　　　　</span>」と思っている範囲の中でしか動けない。</div>
+      <input class="fill-input" id="input1" type="text" placeholder="答えを入力" autocomplete="off">
+      <div class="feedback" id="fb1"></div>
+      <button class="check-btn" onclick="checkFill(1, ['自分ってこういう人間だ', 'こういう人間だ', '自分はこういう人間だ'])">確認する</button>
+    </div>
+
+    <div class="question-card" id="card2">
+      <div class="q-number">Q 02 · 穴埋め</div>
+      <div class="q-text">「自己イメージ」が変わらないと、行動に<span class="blank" id="blank2">　　　</span>がかかる。</div>
+      <input class="fill-input" id="input2" type="text" placeholder="答えを入力" autocomplete="off">
+      <div class="feedback" id="fb2"></div>
+      <button class="check-btn" onclick="checkFill(2, ['ブレーキ'])">確認する</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">理解確認クイズ</div>
+
+    <div class="question-card" id="card3">
+      <div class="q-number">Q 03 · 四択</div>
+      <div class="q-text">変われない一番の理由はどれ？</div>
+      <div class="choices" id="choices3">
+        <button class="choice-btn" onclick="checkChoice(3,0,2)"><span class="choice-label">A</span>意志が弱いから</button>
+        <button class="choice-btn" onclick="checkChoice(3,1,2)"><span class="choice-label">B</span>根性がないから</button>
+        <button class="choice-btn" onclick="checkChoice(3,2,2)"><span class="choice-label">C</span>自己イメージが変わっていないから</button>
+        <button class="choice-btn" onclick="checkChoice(3,3,2)"><span class="choice-label">D</span>正しいやり方を知らないから</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <div class="question-card" id="card4">
+      <div class="q-number">Q 04 · 四択</div>
+      <div class="q-text">New meがいきなり接客テクニックを教えない理由は？</div>
+      <div class="choices" id="choices4">
+        <button class="choice-btn" onclick="checkChoice(4,0,1)"><span class="choice-label">A</span>接客テクニックは意味がないから</button>
+        <button class="choice-btn" onclick="checkChoice(4,1,1)"><span class="choice-label">B</span>「自分はどんな人間か」を先に決めないと機能しないから</button>
+        <button class="choice-btn" onclick="checkChoice(4,2,1)"><span class="choice-label">C</span>テクニックより見た目が大事だから</button>
+        <button class="choice-btn" onclick="checkChoice(4,3,1)"><span class="choice-label">D</span>資格が必要だから</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">考えてみよう · 自由記述</div>
+
+    <div class="question-card" id="card5">
+      <div class="q-number">Q 05 · 自由記述</div>
+      <div class="q-text">今のあなたは「変わりたい私」と「どうせ変われない私」、どちらの前提で毎日を過ごしていますか？</div>
+      <textarea class="free-textarea" id="textarea5" placeholder="ここに自由に記入してください。正解はありません。"></textarea>
+      <div class="free-hint">💡 正直に書くことが大切です。</div>
+      <button class="check-btn" onclick="submitFree(5)">記録する</button>
+      <div class="feedback" id="fb5"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">重要 · 毎日実行する4つの鉄の掟</div>
+
+    <div class="okite-card">
+      <div class="okite-title">NEW ME の4原則</div>
+      <div class="okite-item">
+        <div class="okite-num">1</div>
+        <div>
+          <div class="okite-text">出勤する（まず打席に立つ）</div>
+          <div class="okite-sub">お店に出なければ、何も始まらない</div>
+        </div>
+      </div>
+      <div class="okite-item">
+        <div class="okite-num">2</div>
+        <div>
+          <div class="okite-text">笑顔でいる（接客の基本中の基本）</div>
+        </div>
+      </div>
+      <div class="okite-item">
+        <div class="okite-num">3</div>
+        <div>
+          <div class="okite-text">フリーのお客様にたくさんつく（チャンスの数を増やす）</div>
+        </div>
+      </div>
+      <div class="okite-item">
+        <div class="okite-num">4</div>
+        <div>
+          <div class="okite-text">メモ・ノートを取る（お客さんの情報を残す）</div>
+          <div class="okite-sub">聞いた話、好み、特徴。覚えるだけでなく書いて残す</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question-card" id="card6">
+      <div class="q-number">Q 06 · 四択</div>
+      <div class="q-text">チャンスの数を直接増やすための行動はどれ？</div>
+      <div class="choices" id="choices6">
+        <button class="choice-btn" onclick="checkChoice(6,0,2)"><span class="choice-label">A</span>笑顔でいる</button>
+        <button class="choice-btn" onclick="checkChoice(6,1,2)"><span class="choice-label">B</span>メモ・ノートを取る</button>
+        <button class="choice-btn" onclick="checkChoice(6,2,2)"><span class="choice-label">C</span>フリーのお客様にたくさんつく</button>
+        <button class="choice-btn" onclick="checkChoice(6,3,2)"><span class="choice-label">D</span>出勤する</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">重要結論 · 穴埋め</div>
+
+    <div class="conclusion-card">
+      <div class="conclusion-text">変化は、"気持ち"じゃなく、"行動"で起こす。<br>それがNew meのやり方です。</div>
+    </div>
+
+    <div class="question-card" id="card7">
+      <div class="q-number">Q 07 · 穴埋め</div>
+      <div class="q-text">変化は、「気持ち」じゃなく、「<span class="blank" id="blank7">　　</span>」で起こす。</div>
+      <input class="fill-input" id="input7" type="text" placeholder="答えを入力" autocomplete="off">
+      <div class="feedback" id="fb7"></div>
+      <button class="check-btn" onclick="checkFill(7, ['行動'])">確認する</button>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" onclick="showComplete()">Lesson 1 を完了する</button>
+    <div class="complete-note">すべての問題に回答してから完了してください</div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title">Lesson 1 完了！</div>
+    <div class="modal-score" id="modalScore">—</div>
+    <div class="modal-score-label">正解数 / 全問題数</div>
+    <div class="modal-text">お疲れ様でした。次のLessonへ進みましょう。</div>
+    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('show')">閉じる</button>
+  </div>
+</div>
+
+<script>
+  const answered = new Set();
+  const correct = new Set();
+  const total = 7;
+
+  function checkFill(num, answers) {
+    const input = document.getElementById('input' + num);
+    const fb = document.getElementById('fb' + num);
+    const val = input.value.trim();
+    if (!val) return;
+    const isCorrect = answers.some(a => val.includes(a) || a.includes(val));
+    input.disabled = true;
+    input.classList.add(isCorrect ? 'correct' : 'wrong');
+    const blank = document.getElementById('blank' + num);
+    if (blank) {
+      blank.textContent = isCorrect ? answers[0] : val;
+      blank.style.color = isCorrect ? '#2a9d6a' : '#c0392b';
+    }
+    fb.className = 'feedback ' + (isCorrect ? 'correct-fb' : 'wrong-fb') + ' show';
+    fb.innerHTML = isCorrect ? '✅ 正解です！' : '❌ 正解は「' + answers[0] + '」です。';
+    document.querySelector('#card' + num + ' .check-btn').disabled = true;
+    if (isCorrect) correct.add(num);
+    answered.add(num);
+  }
+
+  function checkChoice(cardNum, selectedIdx, correctIdx) {
+    const btns = document.querySelectorAll('#choices' + cardNum + ' .choice-btn');
+    const fb = document.getElementById('fb' + cardNum);
+    btns.forEach((btn, i) => {
+      btn.disabled = true;
+      if (i === correctIdx) btn.classList.add('correct-answer');
+      else if (i === selectedIdx && selectedIdx !== correctIdx) btn.classList.add('wrong-answer');
+    });
+    const isCorrect = selectedIdx === correctIdx;
+    fb.className = 'feedback ' + (isCorrect ? 'correct-fb' : 'wrong-fb') + ' show';
+    fb.innerHTML = isCorrect ? '✅ 正解です！' : '❌ 正解は ' + ['A','B','C','D'][correctIdx] + ' です。';
+    if (isCorrect) correct.add(cardNum);
+    answered.add(cardNum);
+  }
+
+  function submitFree(num) {
+    const ta = document.getElementById('textarea' + num);
+    const fb = document.getElementById('fb' + num);
+    if (!ta.value.trim()) return;
+    ta.disabled = true;
+    document.querySelector('#card' + num + ' .check-btn').disabled = true;
+    fb.className = 'feedback info-fb show';
+    fb.innerHTML = '📝 記録しました。自分の現在地を知ることが、変化の第一歩です。';
+    correct.add(num);
+    answered.add(num);
+  }
+
+  function showComplete() {
+    document.getElementById('modalScore').textContent = correct.size + ' / ' + total;
+    document.getElementById('modalOverlay').classList.add('show');
+  }
+</script>
+
+</body>
+</html>
